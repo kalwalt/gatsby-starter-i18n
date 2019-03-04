@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { StaticQuery, graphql } from "gatsby"
 import ar from 'react-intl/locale-data/ar'
 import en from 'react-intl/locale-data/en'
 import de from 'react-intl/locale-data/de'
@@ -25,26 +27,17 @@ const messages = {
 	it: localIt
 }
 
-const Layout = ({ children, location, i18nMessages }) => (
-	<StaticQuery
-		query={graphql`
-			query LayoutQuery {
-				site {
-					siteMetadata {
-						languages {
-							defaultLangKey
-							langs
-						}
-					}
-				}
-			}
-		`}
-		render={data => {
+//const Layout = ({ children, location, i18nMessages }) => (
+export default class Layout extends React.Component {
+
+	render({ children, location, i18nMessages }) {
+	const { data } = this.props;
 	const url = location.pathname;
 	const { langs, defaultLangKey } = data.site.siteMetadata.languages;
 	const langKey = getCurrentLangKey(langs, defaultLangKey, url);
 	const homeLink = `/${langKey}`.replace(`/${defaultLangKey}/`, '/');
 	const langsMenu = getLangs(langs, langKey, getUrlForLang(homeLink, url)).map((item) => ({ ...item, link: item.link.replace(`/${defaultLangKey}/`, '/') }));
+  return(
 	<Provider>
 		<Context.Consumer>
 			{({ lang }) => (
@@ -57,12 +50,25 @@ const Layout = ({ children, location, i18nMessages }) => (
 			}
 		</Context.Consumer>
 	</Provider>
-}}
-/>
+
 )
+}
 
 Layout.propTypes = {
   children: PropTypes.func,
 }
 
-export { Layout }
+//export default Layout
+
+export const layoutQuery = graphql`
+query LayoutQuery {
+	site {
+		siteMetadata {
+			languages {
+				defaultLangKey
+				langs
+			}
+		}
+	}
+}
+`
