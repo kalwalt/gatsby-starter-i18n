@@ -12,6 +12,14 @@ module.exports = {
 		'gatsby-plugin-sharp',
 		'gatsby-transformer-sharp',
 		{
+      resolve: 'gatsby-plugin-i18n',
+      options: {
+        langKeyForNull: 'any',
+        langKeyDefault: en,
+        useLangKeyLayout: true,
+        prefixDefault: false,
+      },
+		{
 			resolve: 'gatsby-plugin-google-fonts',
 			options: {
 				fonts: [
@@ -40,13 +48,13 @@ module.exports = {
 				showSpinner: false,
 			},
 		},
-		/* {
+		{
 			resolve: 'gatsby-source-filesystem',
 			options: {
 				name: 'img',
 				path: `${__dirname}/src/images/`
 			}
-		}, */
+		},
 		{
 			resolve: 'gatsby-plugin-manifest',
 			options: {
