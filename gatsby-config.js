@@ -1,8 +1,10 @@
 const config = require('./data/config');
+const languages = require('./data/languages');
 
 module.exports = {
 	siteMetadata: {
 		site_url: config.url,
+		languages
 	},
 	plugins: [
 		'gatsby-plugin-react-helmet',
@@ -15,7 +17,7 @@ module.exports = {
       resolve: 'gatsby-plugin-i18n',
       options: {
         langKeyForNull: 'any',
-        langKeyDefault: 'en',
+        langKeyDefault: languages.defaultLangKey,
         useLangKeyLayout: true,
         prefixDefault: false,
 			},
