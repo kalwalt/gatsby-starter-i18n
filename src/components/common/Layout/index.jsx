@@ -25,11 +25,30 @@ const messages = {
 	it: localIt
 }
 
-const Layout = ({ children }) => (
+const Layout = ({ children, location, i18nMessages }) => (
+	<StaticQuery
+		query={graphql`
+			query LayoutQuery {
+				site {
+					siteMetadata {
+						languages {
+							defaultLangKey
+							langs
+						}
+					}
+				}
+			}
+		`}
+		render={data => {
+	const url = location.pathname;
+	const { langs, defaultLangKey } = data.site.siteMetadata.languages;
+	const langKey = getCurrentLangKey(langs, defaultLangKey, url);
+	const homeLink = `/${langKey}`.replace(`/${defaultLangKey}/`, '/');
+	const langsMenu = getLangs(langs, langKey, getUrlForLang(homeLink, url)).map((item) => ({ ...item, link: item.link.replace(`/${defaultLangKey}/`, '/') }));
 	<Provider>
 		<Context.Consumer>
 			{({ lang }) => (
-				<IntlProvider locale={lang} messages={messages[lang]}>
+				<IntlProvider locale={langKey} messages={i18nMessages}>
 					<Global lang={lang}>
 						{children}
 					</Global>
@@ -38,6 +57,12 @@ const Layout = ({ children }) => (
 			}
 		</Context.Consumer>
 	</Provider>
+}}
+/>
 )
+
+Layout.propTypes = {
+  children: PropTypes.func,
+}
 
 export { Layout }
