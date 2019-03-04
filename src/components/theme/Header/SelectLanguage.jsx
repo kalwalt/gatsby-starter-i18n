@@ -7,6 +7,7 @@ const SelectLanguage = ({ selectLanguage, lang }) => (
 		<option value="es">Español</option>
 		<option value="de">Deutsch</option>
 		<option value="ar">عربي</option>
+		<option value="it">Italiano</option>
 	</select>
 )
 
